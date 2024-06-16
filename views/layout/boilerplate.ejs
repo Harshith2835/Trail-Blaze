@@ -120,164 +120,156 @@
     </style>
 
 
-
-<style>
-    .form-box {
-        max-width: 600px; /* Increased width */
-        width: 100%;
-        background: #f1f7fe;
-        overflow: hidden;
-        border-radius: 16px;
-        color: #010101;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin: 50px auto; /* Center horizontally and add vertical margin */
-    }
-
-    .form {
-        display: flex;
-        flex-direction: column;
-        padding: 20px; /* Reduced padding */
-        gap: 10px; /* Reduced gap */
-        text-align: center;
-        align-items: center;
-    }
-
-    .title {
-        font-weight: bold;
-        font-size: 1.6rem; /* Adjusted font size */
-    }
-
-    .form-container {
-        overflow: hidden;
-        border-radius: 8px;
-        background-color: #fff;
-        width: 100%;
-        padding: 10px 20px; /* Adjusted padding */
-        box-sizing: border-box;
-    }
-
-    .form-label {
-        display: block;
-        margin-bottom: 5px; /* Reduced margin */
-        font-weight: bold;
-        font-size: 1rem;
-        text-align: left;
-        width: 100%;
-    }
-
-    .input {
-        background: none;
-        border: 1px solid #eee;
-        outline: 0;
-        height: 40px;
-        width: 100%;
-        font-size: 1rem;
-        padding: 8px 15px;
-        margin-bottom: 10px; /* Reduced margin */
-        box-sizing: border-box;
-        border-radius: 8px;
-    }
-
-    .price-input-container {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px; /* Reduced margin */
-    }
-
-    .price-input-container .input-group-text {
-        margin-top: 0;
-        background-color: #e0ecfb;
-        border: 1px solid #eee;
-        border-right: 0;
-        padding: 8px 12px;
-        border-radius: 8px 0 0 8px;
-        font-size: 1rem;
-        color: #666;
-        align-items: center;
-        justify-content: center;
-        transform: translateY(-5px);
-    }
-
-    .input.price-input {
-        border-radius: 0 8px 8px 0;
-        border-left: 0;
-    }
-
-    .textarea {
-        background: none;
-        border: 1px solid #eee;
-        outline: 0;
-        width: 100%;
-        font-size: 1rem;
-        padding: 8px 15px;
-        margin-bottom: 10px; /* Reduced margin */
-        box-sizing: border-box;
-        border-radius: 8px;
-        resize: vertical; /* Allow vertical resizing */
-        height: 80px; /* Reduced height */
-    }
-
-    .form-section {
-        padding: 10px; /* Reduced padding */
-        font-size: .9rem;
-        background-color: #e0ecfb;
-        box-shadow: rgb(0 0 0 / 8%) 0 -1px;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    .form-section a {
-        font-weight: bold;
-        color: #0066ff;
-        transition: color .3s ease;
-    }
-
-    .form-section a:hover {
-        color: #005ce6;
-        text-decoration: underline;
-    }
-
-    .form button {
-        background-color: #12e220;
-        color: #fff;
-        border: 0;
-        border-radius: 24px;
-        padding: 10px 20px; /* Adjusted padding */
-        font-size: 1.2rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background-color .3s ease;
-    }
-
-    .form button:hover {
-        background-color: #0066ff;
-    }
-
-    @media (max-width: 600px) {
+    <style>
         .form-box {
-            max-width: 90%;
+            max-width: 600px;
+            width: 100%;
+            background: #f1f7fe;
+            overflow: hidden;
+            border-radius: 16px;
+            color: #010101;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 50px auto;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            gap: 10px;
+            text-align: center;
+            align-items: center;
         }
 
         .title {
-            font-size: 1.4rem;
+            font-weight: bold;
+            font-size: 1.6rem;
         }
 
-        .input, .textarea {
-            height: 45px;
-            font-size: 0.9rem;
+        .form-container {
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #fff;
+            width: 100%;
+            padding: 10px 20px;
+            box-sizing: border-box;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 1rem;
+            text-align: left;
+            width: 100%;
+        }
+
+        .input {
+            background: none;
+            border: 1px solid #eee;
+            outline: 0;
+            height: 40px;
+            width: 100%;
+            font-size: 1rem;
+            padding: 8px 15px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border-radius: 8px;
+        }
+
+        .input:invalid {
+            border-color: #e74c3c;
+        }
+
+        .input:valid {
+            border-color: #2ecc71;
+        }
+
+
+        .textarea {
+            background: none;
+            border: 1px solid #eee;
+            outline: 0;
+            width: 100%;
+            font-size: 1rem;
+            padding: 8px 15px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border-radius: 8px;
+            resize: vertical;
+            height: 80px;
+        }
+
+        .textarea:invalid {
+            border-color: #e74c3c;
+        }
+
+        .textarea:valid {
+            border-color: #2ecc71;
+        }
+
+        .form-section {
+            padding: 10px;
+            font-size: .9rem;
+            background-color: #e0ecfb;
+            box-shadow: rgb(0 0 0 / 8%) 0 -1px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-section a {
+            font-weight: bold;
+            color: #0066ff;
+            transition: color .3s ease;
+        }
+
+        .form-section a:hover {
+            color: #005ce6;
+            text-decoration: underline;
         }
 
         .form button {
-            padding: 10px 16px;
-            font-size: 1rem;
+            background-color: #12e220;
+            color: #fff;
+            border: 0;
+            border-radius: 24px;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color .3s ease;
         }
 
-        .price-input-container .input-group-text {
-            padding: 8px 10px; /* Adjust padding for smaller screens */
-            font-size: 0.9rem;
+        .form button:hover {
+            background-color: #0066ff;
         }
-    }
-</style>
+
+        @media (max-width: 600px) {
+            .form-box {
+                max-width: 90%;
+            }
+
+            .title {
+                font-size: 1.4rem;
+            }
+
+            .input,
+            .textarea {
+                height: 45px;
+                font-size: 0.9rem;
+            }
+
+            .form button {
+                padding: 10px 16px;
+                font-size: 1rem;
+            }
+
+            .price-input-container .input-group-text {
+                padding: 8px 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 
 <body class="d-flex flex-column vh-100">
@@ -290,6 +282,28 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
                 crossorigin="anonymous"></script>
+
+
+            <script>
+                (() => {
+                    'use strict'
+
+                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                    const forms = document.querySelectorAll('.validated-form')
+
+                    // Loop over them and prevent submission
+                    Array.from(forms).forEach(form => {
+                        form.addEventListener('submit', event => {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+                })()
+            </script>
 </body>
 
 </html>

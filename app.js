@@ -48,13 +48,17 @@ app.get('/campgrounds/new',async(req,res)=>{
     res.render('campgrounds/new')
  })
 
- app.post('/campgrounds',async(req,res)=>{
+ app.post('/campgrounds',async(req,res,next)=>{
+    try{
      const camp=new Campground(req.body.campground);
      await camp.save();
      res.redirect(`/campgrounds/${camp._id}`)
+    }catch(e){
+        next(e)
+    }
 })
     
-    app.get('/campgrounds/:id',async(req,res)=>{
+    app.get('/campgrounds/:id',async(req,res,next)=>{
          const id=req.params.id;
          const campground=await Campground.findById(id)
          res.render('campgrounds/show',{campground})
@@ -77,6 +81,9 @@ app.get('/campgrounds/new',async(req,res)=>{
     const id=req.params.id;
     await Campground.findByIdAndDelete(id);
     res.redirect(`/campgrounds`)
+ })
+ app.use((err,req,res,next)=>{
+    res.send('oh fck!!!! errorrrrrrrr')
  })
 
 app.listen(3000,function(){
