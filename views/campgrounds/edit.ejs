@@ -1,0 +1,29 @@
+<% layout('layout/boilerplate') %>
+    <div class="form-box">
+        <form action="/campgrounds/<%=campground._id %>?_method=PUT" method="POST" class="form">
+            <span class="title">Edit campground</span>
+            <div class="form-container">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="input" id="title" name="campground[title]" value="<%=campground.title %>" placeholder="Title">
+
+                <label for="location" class="form-label">Location</label>
+                <input type="text" class="input" id="location" name="campground[location]" value="<%=campground.location %>" placeholder="Location">
+
+                <label for="image" class="form-label">Image URL</label>
+                <input type="text" class="input" id="image" name="campground[image]" placeholder="Image URL">
+
+                <label for="price" class="form-label">Price</label>
+                <div class="price-input-container">
+                    <span class="input-group-text">$</span>
+                    <input id="price" type="text" class="input price-input" placeholder="0.00" aria-label="price-label" name="campground[price]">
+                </div>
+
+                <label for="description" class="form-label">Description</label>
+                <textarea class="textarea" id="description" rows="3" name="campground[description]" placeholder="Description" ><%= campground.description %></textarea>
+            </div>
+            <button type="submit" class="btn-97 btn-success">Update camp</button>
+        </form>
+        <div class="form-section">
+            <p><a href="/campgrounds/<%= campground._id %>">Back</a></p>
+        </div>
+    </div>
