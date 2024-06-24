@@ -6,8 +6,12 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const ExpressError = require('./utils/ExpressError');
 const campgroundRoutes = require('./router/campgroundsroutes');
+const userRoutes = require('./router/userroutes');
 const reviewRoutes = require('./router/reviewroutes');
-const flash=require('connect-flash')
+const flash=require('connect-flash');
+const User=require('./models/user');
+const passport = require('passport');
+const localstrategy=require('passport-local')
 // Database connection
 const mongoDB = 'mongodb://127.0.0.1/TrailBlaze';
 mongoose.connect(mongoDB);
@@ -41,13 +45,19 @@ const sessionConfig = {
     }
 };
 app.use(session(sessionConfig));
+app.use( passport.initialize());
+app.use(passport.session());
+passport.use(new localstrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+
 app.use(flash())
 app.use((req,res,next)=>{
     res.locals.success=req.flash('success');
-    next();
-})
-app.use((req,res,next)=>{
     res.locals.error=req.flash('error');
+    res.locals.currentUser=req.user;
     next();
 })
 
@@ -58,6 +68,7 @@ app.get('/', (req, res) => {
 });
 
 app.use("/campgrounds", campgroundRoutes);
+app.use("/", userRoutes);
 app.use("/campgrounds/:id/reviews", reviewRoutes);
 
 // Error handling middleware
