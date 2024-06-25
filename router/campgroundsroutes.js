@@ -1,22 +1,10 @@
 const express=require('express')
 const router=express.Router();
 const catchAsync = require('../utils/catchAsync');
-const ExpressError = require('../utils/ExpressError');
 const Campground = require('../models/campground');
-const { campgroundSchema} = require('../validationschema');
-const {isLoggedIn}=require('../middleware')
+const {isLoggedIn,isAuth,validateCampground}=require('../middleware')
 const mongoose = require('mongoose');
 
-
-const validateCampground = function (req, res, next) {
-    const { error } = campgroundSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    } else {
-        next();
-    }
-}
 
 router.get('/', catchAsync(async (req, res,next) => {
     const campgrounds = await Campground.find({});
@@ -29,6 +17,7 @@ router.get('/new',isLoggedIn, (req, res,next) => {
 
 router.post('/', isLoggedIn,validateCampground, catchAsync(async (req, res) => {
     const camp = new Campground(req.body.campground);
+    camp.author=req.user._id;
     await camp.save();
     req.flash('success',"Successfully created the camp")
     res.redirect(`/campgrounds/${camp._id}`);
@@ -39,7 +28,12 @@ router.get('/:id', catchAsync(async (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new ExpressError('Invalid Campground ID', 400);
     }
-    const campground = await Campground.findById(id).populate('reviews');
+    const campground = await Campground.findById(id).populate({
+        path:'reviews',
+        populate:{
+            path:'author'
+        }
+    }).populate('author');
     if (!campground) {
         req.flash('error',"Can't find the campground");
         return res.redirect('/campgrounds')
@@ -47,7 +41,7 @@ router.get('/:id', catchAsync(async (req, res, next) => {
     res.render('campgrounds/show', { campground });
 }));
 
-router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res, next) => {
+router.get('/:id/edit', isLoggedIn, isAuth,catchAsync(async (req, res, next) => {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new ExpressError('Invalid Campground ID', 400);
@@ -59,7 +53,7 @@ router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res, next) => {
     res.render('campgrounds/edit', { campground });
 }));
 
-router.put('/:id', isLoggedIn, validateCampground, catchAsync(async (req, res, next) => {
+router.put('/:id', isLoggedIn,isAuth, validateCampground, catchAsync(async (req, res, next) => {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new ExpressError('Invalid Campground ID', 400);
@@ -69,7 +63,7 @@ router.put('/:id', isLoggedIn, validateCampground, catchAsync(async (req, res, n
     res.redirect(`/campgrounds/${camp._id}`);
 }));
 
-router.delete('/:id', isLoggedIn,catchAsync(async (req, res, next) => {
+router.delete('/:id', isLoggedIn,isAuth,catchAsync(async (req, res, next) => {
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new ExpressError('Invalid Campground ID', 400);

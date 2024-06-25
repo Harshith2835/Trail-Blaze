@@ -29,6 +29,7 @@ const seedDB = async () => {
         const price = Math.floor(Math.random() * 50) + 5;
         const randomImage = images[Math.floor(Math.random() * images.length)]; // Pick a random image
         const camp = new Campground({
+            author:'667903220037d72ab90b9df8',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${namearray(descriptors)} ${namearray(places)}`,
             image: randomImage,

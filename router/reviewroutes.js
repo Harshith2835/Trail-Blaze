@@ -3,24 +3,13 @@ const router=express.Router({mergeParams:true});
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const Review = require('../models/review');
+const {isLoggedIn,validateCampground,validateReview,isreviewAuth}=require('../middleware')
 const Campground = require('../models/campground');
 const mongoose = require('mongoose');
-const { reviewvalidationSchema } = require('../validationschema');
 
 
 
-const validateReview = function (req, res, next) {
-    const { error } = reviewvalidationSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg, 400);
-    } else {
-        next();
-    }
-}
-
-
-router.post('/', validateReview, catchAsync(async (req, res, next) => {
+router.post('/', isLoggedIn,validateReview, catchAsync(async (req, res, next) => {
     
     const { id } = req.params;
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -31,13 +20,14 @@ router.post('/', validateReview, catchAsync(async (req, res, next) => {
         throw new ExpressError('Campground not found', 404);
     }
     const review = new Review(req.body.review);
+    review.author=req.user._id
     camp.reviews.push(review);
     await review.save();
     await camp.save();
     req.flash('success','Review uploaded');
     res.redirect(`/campgrounds/${camp._id}`);
 }))
-router.delete('/:reviewid',catchAsync(async(req,res,next)=>{
+router.delete('/:reviewid',isLoggedIn,catchAsync(async(req,res,next)=>{
     const {id,reviewid}=req.params;
     await Campground.findByIdAndUpdate(id,{$pull:{reviews:reviewid}})
     await Review.findByIdAndDelete(reviewid);
