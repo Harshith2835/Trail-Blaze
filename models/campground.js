@@ -1,22 +1,27 @@
 const mongoose = require('mongoose');
 const Review = require('./review');
 const { ref } = require('joi');
-const Schema=mongoose.Schema;
+const Schema = mongoose.Schema;
 
-const CampgroundSchema=new Schema({
-    title:String,
-    image:String,
-    price:Number,
-    description:String,
-    location:String,
-    author:{
-        type:Schema.Types.ObjectId,
-        ref:'user'
-    },
-    reviews:[
+const CampgroundSchema = new Schema({
+    title: String,
+    images: [
         {
-            type:Schema.Types.ObjectId,
-            ref:'review'
+            url: String,
+            filename: String
+        }
+    ],
+    price: Number,
+    description: String,
+    location: String,
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+    },
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'review'
         }
     ]
 });
@@ -31,4 +36,4 @@ CampgroundSchema.post('findOneAndDelete', async function (doc) {
     }
 });
 
-module.exports=mongoose.model('Campground',CampgroundSchema);
+module.exports = mongoose.model('Campground', CampgroundSchema);

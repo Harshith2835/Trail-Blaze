@@ -16,9 +16,11 @@ module.exports.isLoggedIn=function(req,res,next){
 module.exports.storeReturnTo = (req, res, next) => {
     if (req.session.returnTo) {
         res.locals.returnTo = req.session.returnTo;
+        delete req.session.returnTo;
     }
     next();
-}
+};
+
 module.exports.validateCampground = function (req, res, next) {
     const { error } = campgroundSchema.validate(req.body);
     if (error) {

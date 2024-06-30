@@ -18,7 +18,10 @@ async function fetchCampgroundImages() {
     const response = await axios.get(`https://api.unsplash.com/collections/${collectionId}/photos`, {
         params: { client_id: UNSPLASH_ACCESS_KEY }
     });
-    return response.data.map(photo => photo.urls.regular); // Return array of image URLs
+    return response.data.map(photo => ({
+        url: photo.urls.regular,
+        filename: photo.slug // Use the photo slug as the filename
+    }));
 }
 
 const seedDB = async () => {
@@ -26,13 +29,23 @@ const seedDB = async () => {
     const images = await fetchCampgroundImages(); // Fetch images once
     for (let i = 0; i < 50; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
+        const randomImg1 = Math.floor(Math.random() * images.length);
+        const randomImg2 = Math.floor(Math.random() * (images.length-5));
         const price = Math.floor(Math.random() * 50) + 5;
-        const randomImage = images[Math.floor(Math.random() * images.length)]; // Pick a random image
         const camp = new Campground({
-            author:'667903220037d72ab90b9df8',
+            author: '667903220037d72ab90b9df8',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${namearray(descriptors)} ${namearray(places)}`,
-            image: randomImage,
+            images: [
+                {
+                    url: images[randomImg1].url,
+                    filename: images[randomImg1].filename
+                },
+                {
+                    url: images[randomImg2].url,
+                    filename: images[randomImg2].filename
+                }
+            ],
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum nulla, eius velit ipsa expedita, excepturi rerum veniam, totam sit vel sapiente amet nihil aliquam ad culpa tenetur sint delectus omnis.',
             price,
         });
